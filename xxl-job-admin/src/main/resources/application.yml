@@ -1,0 +1,67 @@
+server:
+  port: 8080
+
+
+spring:
+  freemarker:
+    settings:
+      number_format: 0.##########
+    charset: UTF-8
+    request-context-attribute: request
+    templateLoaderPath: classpath:/templates/
+    suffix: .ftl
+
+  resources:
+    static-locations: classpath:/static/
+
+  mvc:
+    static-path-pattern: /static/**
+
+  profiles:
+    active: dev
+
+mybatis:
+  mapper-locations: classpath:/mybatis-mapper/*Mapper.xml
+
+xxl:
+  job:
+    mail:
+      password: asdfzxcv
+      port: 25
+      host: smtp.163.com
+      sendNick:
+      ssl: false
+      username: ovono802302@163.com
+    login:
+      password: 123456
+      username: admin
+    accessToken:
+    i18n:
+
+---
+spring:
+  profiles: dev
+
+  datasource:
+    username: root
+    password: admin
+    type: org.apache.tomcat.jdbc.pool.DataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/xxl-job?Unicode=true&characterEncoding=UTF-8
+
+---
+
+spring:
+  profiles: alpha
+
+  datasource:
+    username: root
+    password: admin
+    type: org.apache.tomcat.jdbc.pool.DataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/xxl-job?Unicode=true&characterEncoding=UTF-8
+
+---
+spring:
+  profiles: prod
+

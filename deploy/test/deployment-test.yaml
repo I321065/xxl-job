@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: zaihui-marketing
+  name: xxl-job-test
+  labels:
+    app: xxl-job-test
+    version: test
+spec:
+  ports:
+  - name: http-xxl-job-test-80
+    port: 80
+    targetPort: 8081
+  selector:
+    app: xxl-job-test
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  namespace: zaihui-marketing
+  name: xxl-job-test
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: xxl-job-test
+        version: test
+    spec:
+      containers:
+      - name: xxl-job-test
+        image: docker-inter.kezaihui.com/marketing/migratory-xxl-job/xxl-job-app:test-latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8086
+          protocol: TCP
+        - containerPort: 8081
+          protocol: TCP
+        env:
+        - name: JBE_ENV
+          value: test
+        - name: TZ
+          value: "Asia/Shanghai"
+        - name: JAVA_OPTS
+          value: "-Xmx512m -Xms512m"
+        volumeMounts:
+        - mountPath: /var/logs
+          name: xxl-job-test
+      volumes:
+      - name: xxl-job-test
+        hostPath:
+          path: /var/log/
+          type: DirectoryOrCreate
